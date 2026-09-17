@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Сайт Олимпиадного МХК в ЛНИП">
+    <meta name="keywords" content="МХК, ЛНИП, Олимпиадное, олимпиада МХК, ЛНИП">
+    <meta name="author" content="VASELIO L">
+    <title>МХК</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f0f8ff;
+            color: #003366;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: #003366;
+            color: white;
+            width: 100%;
+            padding: 20px 0;
+            text-align: center;
+        }
+        .auth {
+            margin-top: 50px;
+            background: white;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 400px;
+        }
+        input {
+            width: calc(100% - 22px);
+            padding: 12px;
+            margin: 12px 0;
+            border: 1px solid #cce0f2;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #003366;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        a {
+           background-color: #ffffff; 
+        }
+        a:hover{
+            text-decoration: underline;
+        }
+        footer{
+            margin-top: end; 
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+            padding: 2rem 0;
+            font-size: 0.9rem;
+            color: #6b7280;
+        }
+    </style>
+            
+</head>
+<body>
+    <header>
+        <h1>МХК</h1>
+    </header>
+    
+    <div class="auth">
+        <h2>Авторизация</h2>
+        <input id="loginInput" type="text" placeholder="Логин, выданный учителем" required>
+        <input id="passInput" type="password" placeholder="Пароль, выданный учителем" required>
+        <p id="errorMessage" style="color: red; display: none; text-align: center; margin: 10px 0;"></p>
+        
+        <button id="loginBtn">Войти</button>
+        
+        <p><a href="indexmainpage.html">Зарегистрироваться?</a></p>
+    </div>
+
+    <script>
+        const API_URL = 'https://script.google.com/macros/s/AKfycbyyd4tSgqgSVGaZY207LgdZn8aQzu5oC8CtVxcPMKAMZw6xGi1s62GhEAK75IKXnXwd/exec'; 
+        document.getElementById('loginBtn').addEventListener('click', function(event) {
+            event.preventDefault();
+
+            const login = document.getElementById('loginInput').value;
+            const password = document.getElementById('passInput').value;
+            const errorMsg = document.getElementById('errorMessage');
+
+            if (!login || !password) {
+                errorMsg.textContent = "Пожалуйста, введите логин и пароль.";
+                errorMsg.style.display = 'block';
+                return;
+            }
+            fetch(API_URL + `?login=${encodeURIComponent(login)}&password=${encodeURIComponent(password)}`)
+                .then(response => response.text())
+                .then(data => {
+  
+                    if (data.trim() === 'true') {
+                        window.location.href = "indexmainpage.html";
+                    } else {
+                        errorMsg.textContent = "Неверный логин или пароль.";
+                        errorMsg.style.display = 'block';
+                    }
+                })
+                .catch(error => {
+                    console.error("Ошибка:", error);
+                    errorMsg.textContent = "Неверный логин или пароль. Попробуйте позже.";
+                    errorMsg.style.display = 'block';
+                });
+        });
+    </script>
+    <footer>
+        © 2026 Сайт для группы Олимпиадного МХК в ЛНИП. Все права защищены.
+    </footer>
+</body>
+
+</html>
